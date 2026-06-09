@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>US Furniture Sales Dashboard | 2011–2014</title>
+  <meta name="description" content="Interactive analytics dashboard for US Furniture sales data covering 2011-2014. Explore revenue, profit, segments, regions, and product performance." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- Sidebar -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-brand">
+      <div class="brand-icon">🪑</div>
+      <div class="brand-text">
+        <span class="brand-name">FurniMetrics</span>
+        <span class="brand-sub">US Furniture Analytics</span>
+      </div>
+    </div>
+    <nav class="sidebar-nav">
+      <a href="#overview" class="nav-item active" data-section="overview">
+        <span class="nav-icon">📊</span><span class="nav-label">Overview</span>
+      </a>
+      <a href="#trends" class="nav-item" data-section="trends">
+        <span class="nav-icon">📈</span><span class="nav-label">Sales Trends</span>
+      </a>
+      <a href="#products" class="nav-item" data-section="products">
+        <span class="nav-icon">📦</span><span class="nav-label">Products</span>
+      </a>
+      <a href="#customers" class="nav-item" data-section="customers">
+        <span class="nav-icon">👥</span><span class="nav-label">Customers</span>
+      </a>
+      <a href="#geography" class="nav-item" data-section="geography">
+        <span class="nav-icon">🗺️</span><span class="nav-label">Geography</span>
+      </a>
+      <a href="#discount" class="nav-item" data-section="discount">
+        <span class="nav-icon">🏷️</span><span class="nav-label">Pricing & Discount</span>
+      </a>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="data-badge">
+        <span class="badge-dot"></span>
+        <span>2,121 Records · 2011–2014</span>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <!-- Header -->
+    <header class="top-header">
+      <button class="menu-toggle" id="menuToggle">☰</button>
+      <div class="header-left">
+        <h1 class="page-title">US Furniture Sales Dashboard</h1>
+        <p class="page-subtitle">Global Superstore · Furniture Category · United States Market</p>
+      </div>
+      <div class="header-right">
+        <div class="year-filter">
+          <label>Filter Year:</label>
+          <select id="yearFilter">
+            <option value="all">All Years</option>
+            <option value="2011">2011</option>
+            <option value="2012">2012</option>
+            <option value="2013">2013</option>
+            <option value="2014">2014</option>
+          </select>
+        </div>
+        <div class="last-updated">Last updated: Dec 2014</div>
+      </div>
+    </header>
+
+    <!-- ───────────────── OVERVIEW ───────────────── -->
+    <section id="overview" class="dashboard-section active">
+      <div class="section-header">
+        <h2>📊 Business Overview</h2>
+        <p>Key performance indicators across all years</p>
+      </div>
+
+      <!-- KPI Cards -->
+      <div class="kpi-grid">
+        <div class="kpi-card accent-blue">
+          <div class="kpi-icon">💰</div>
+          <div class="kpi-content">
+            <div class="kpi-value" id="kpi-sales">$741,999</div>
+            <div class="kpi-label">Total Revenue</div>
+            <div class="kpi-trend up">↑ 37% vs 2011</div>
+          </div>
+        </div>
+        <div class="kpi-card accent-green">
+          <div class="kpi-icon">📈</div>
+          <div class="kpi-content">
+            <div class="kpi-value" id="kpi-profit">$18,451</div>
+            <div class="kpi-label">Total Profit</div>
+            <div class="kpi-trend neutral">⚠ Low margin 2.49%</div>
+          </div>
+        </div>
+        <div class="kpi-card accent-purple">
+          <div class="kpi-icon">📦</div>
+          <div class="kpi-content">
+            <div class="kpi-value" id="kpi-qty">8,028</div>
+            <div class="kpi-label">Units Sold</div>
+            <div class="kpi-trend up">↑ 50% vs 2011</div>
+          </div>
+        </div>
+        <div class="kpi-card accent-orange">
+          <div class="kpi-icon">👥</div>
+          <div class="kpi-content">
+            <div class="kpi-value">707</div>
+            <div class="kpi-label">Unique Customers</div>
+            <div class="kpi-trend up">↑ Growing base</div>
+          </div>
+        </div>
+        <div class="kpi-card accent-red">
+          <div class="kpi-icon">🏷️</div>
+          <div class="kpi-content">
+            <div class="kpi-value">3.88%</div>
+            <div class="kpi-label">Avg Profit Margin</div>
+            <div class="kpi-trend down">↓ Tables drag overall</div>
+          </div>
+        </div>
+        <div class="kpi-card accent-teal">
+          <div class="kpi-icon">🚚</div>
+          <div class="kpi-content">
+            <div class="kpi-value">2,121</div>
+            <div class="kpi-label">Total Orders</div>
+            <div class="kpi-trend up">↑ Steady growth</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Charts Row 1 -->
+      <div class="charts-row">
+        <div class="chart-card wide">
+          <div class="chart-header">
+            <h3>Revenue vs Profit by Year</h3>
+            <span class="chart-badge">Annual</span>
+          </div>
+          <div class="chart-wrap"><canvas id="yearlyChart"></canvas></div>
+        </div>
+        <div class="chart-card">
+          <div class="chart-header">
+            <h3>Sales by Segment</h3>
+            <span class="chart-badge">Distribution</span>
+          </div>
+          <div class="chart-wrap"><canvas id="segmentDonut"></canvas></div>
+        </div>
+      </div>
+
+      <!-- Charts Row 2 -->
+      <div class="charts-row">
+        <div class="chart-card">
+          <div class="chart-header">
+            <h3>Sales by Region</h3>
+            <span class="chart-badge">Geographic</span>
+          </div>
+          <div class="chart-wrap"><canvas id="regionBar"></canvas></div>
+        </div>
+        <div class="chart-card">
+          <div class="chart-header">
+            <h3>Profit by Ship Mode</h3>
+            <span class="chart-badge">Logistics</span>
+          </div>
+          <div class="chart-wrap"><canvas id="shipModeChart"></canvas></div>
+        </div>
+        <div class="chart-card">
+          <div class="chart-header">
+            <h3>Orders by Priority</h3>
+            <span class="chart-badge">Operations</span>
+          </div>
+          <div class="chart-wrap"><canvas id="priorityChart"></canvas></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ───────────────── TRENDS ───────────────── -->
+    <section id="trends" class="dashboard-section">
+      <div class="section-header">
+        <h2>📈 Sales Trends</h2>
+        <p>Monthly and annual performance analysis</p>
+      </div>
+      <div class="charts-row">
+        <div class="chart-card full-width">
+          <div class="chart-header">
+            <h3>Monthly Sales & Profit Trend (2011–2014)</h3>
+            <div class="legend-pills">
+              <span class="pill blue">● Revenue</span>
+              <span class="pill green">● Profit</span>
+            </div>
+          </div>
+          <div class="chart-wrap tall"><canvas id="monthlyTrend"></canvas></div>
+        </div>
+      </div>
+      <div class="charts-row">
+        <div class="chart-card wide">
+          <div class="chart-header">
+            <h3>Quarterly Revenue Comparison</h3>
+            <span class="chart-badge">Seasonality</span>
+          </div>
+          <div class="chart-wrap"><canvas id="quarterlyChart"></canvas></div>
+        </div>
+        <div class="chart-card">
+          <div class="chart-header">
+            <h3>YoY Growth Rate</h3>
+            <span class="chart-badge">Growth</span>
+          </div>
+          <div class="chart-wrap"><canvas id="growthChart"></canvas></div>
+        </div>
+      </div>
+      <!-- Insight Cards -->
+      <div class="insights-row">
+        <div class="insight-card">
+          <div class="insight-icon">🔥</div>
+          <h4>Peak Month</h4>
+          <p>November & December consistently generate the highest revenue across all years — holiday seasonality effect.</p>
+        </div>
+        <div class="insight-card">
+          <div class="insight-icon">❄️</div>
+          <h4>Slowest Period</h4>
+          <p>February shows the lowest monthly sales in all 4 years, suggesting post-holiday spending fatigue.</p>
+        </div>
+        <div class="insight-card">
+          <div class="insight-icon">📉</div>
+          <h4>Profit Concern</h4>
+          <p>Despite revenue growth of +37%, profit growth is volatile — heavy discounting in Q1 each year squeezes margins.</p>
+        </div>
+        <div class="insight-card">
+          <div class="insight-icon">🚀</div>
+          <h4>Best Year</h4>
+          <p>2014 achieved highest revenue ($215K) but profit dropped vs 2013 due to aggressive discounting strategy.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ───────────────── PRODUCTS ───────────────── -->
+    <section id="products" class="dashboard-section">
+      <div class="section-header">
+        <h2>📦 Product Performance</h2>
+        <p>Sub-category and product-level analysis</p>
+      </div>
+      <div class="charts-row">
+        <div class="chart-card">
+          <div class="chart-header">
+            <h3>Sales by Sub-Category</h3>
+            <span class="chart-badge">Revenue Split</span>
+          </div>
+          <div class="chart-wrap"><canvas id="subCatSales"></canvas></div>
+        </div>
+        <div class="chart-card">
+          <div class="chart-header">
+            <h3>Profit by Sub-Category</h3>
+            <span class="chart-badge">Profitability</span>
+          </div>
+          <div class="chart-wrap"><canvas id="subCatProfit"></canvas></div>
+        </div>
+        <div class="chart-card">
+          <div class="chart-header">
+            <h3>Margin by Sub-Category</h3>
+            <span class="chart-badge">Efficiency</span>
+          </div>
+          <div class="chart-wrap"><canvas id="subCatMargin"></canvas></div>
+        </div>
+      </div>
+      <div class="charts-row">
+        <div class="chart-card wide">
+          <div class="chart-header">
+            <h3>Top 10 Products by Revenue</h3>
+            <span class="chart-badge">Ranking</span>
+          </div>
+          <div class="chart-wrap tall"><canvas id="topProductsChart"></canvas></div>
+        </div>
+        <div class="chart-card">
+          <div class="chart-header">
+            <h3>Sub-Category Volume vs Profit</h3>
+            <span class="chart-badge">Matrix</span>
+          </div>
+          <div class="chart-wrap"><canvas id="volProfitBubble"></canvas></div>
+        </div>
+      </div>
+      <!-- Sub-Category Analysis Table -->
+      <div class="table-card">
+        <div class="chart-header">
+          <h3>Sub-Category Detail Analysis</h3>
+          <span class="chart-badge">Full Data</span>
+        </div>
+        <div class="table-wrapper">
+          <table class="data-table" id="subCatTable">
+            <thead>
+              <tr>
+                <th>Sub-Category</th>
+                <th>Total Sales</th>
+                <th>Total Profit</th>
+                <th>Units Sold</th>
+                <th>Avg Margin</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><span class="cat-badge chairs">🪑 Chairs</span></td>
+                <td>$328,449</td><td class="profit-pos">$26,590</td><td>2,356</td>
+                <td><div class="margin-bar"><div class="bar-fill" style="width:60%;background:#22c55e"></div><span>4.0%</span></div></td>
+                <td><span class="status-badge good">✅ Profitable</span></td>
+              </tr>
+              <tr>
+                <td><span class="cat-badge tables">🪑 Tables</span></td>
+                <td>$206,966</td><td class="profit-neg">-$17,725</td><td>1,241</td>
+                <td><div class="margin-bar"><div class="bar-fill" style="width:15%;background:#ef4444"></div><span>-15%</span></div></td>
+                <td><span class="status-badge bad">❌ Loss Making</span></td>
+              </tr>
+              <tr>
+                <td><span class="cat-badge bookcases">📚 Bookcases</span></td>
+                <td>$114,880</td><td class="profit-neg">-$3,473</td><td>868</td>
+                <td><div class="margin-bar"><div class="bar-fill" style="width:13%;background:#ef4444"></div><span>-13%</span></div></td>
+                <td><span class="status-badge bad">❌ Loss Making</span></td>
+              </tr>
+              <tr>
+                <td><span class="cat-badge furnishings">🛋️ Furnishings</span></td>
+                <td>$91,705</td><td class="profit-pos">$13,059</td><td>3,563</td>
+                <td><div class="margin-bar"><div class="bar-fill" style="width:70%;background:#22c55e"></div><span>14%</span></div></td>
+                <td><span class="status-badge good">✅ Best Margin</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ───────────────── CUSTOMERS ───────────────── -->
+    <section id="customers" class="dashboard-section">
+      <div class="section-header">
+        <h2>👥 Customer Analysis</h2>
+        <p>Segment behavior, top customers, and purchase patterns</p>
+      </div>
+      <div class="charts-row">
+        <div class="chart-card wide">
+          <div class="chart-header">
+            <h3>Revenue vs Profit by Segment</h3>
+            <span class="chart-badge">Grouped</span>
+          </div>
+          <div class="chart-wrap"><canvas id="segmentGrouped"></canvas></div>
+        </div>
+        <div class="chart-card">
+          <div class="chart-header">
+            <h3>Order Volume by Segment</h3>
+            <span class="chart-badge">Volume</span>
+          </div>
+          <div class="chart-wrap"><canvas id="segmentQty"></canvas></div>
+        </div>
+      </div>
+      <div class="charts-row">
+        <div class="chart-card wide">
+          <div class="chart-header">
+            <h3>Top 10 Customers by Profit</h3>
+            <span class="chart-badge">Leaderboard</span>
+          </div>
+          <div class="chart-wrap tall"><canvas id="topCustomers"></canvas></div>
+        </div>
+        <div class="chart-card">
+          <div class="chart-header">
+            <h3>Segment Purchase Frequency</h3>
+            <span class="chart-badge">Behavior</span>
+          </div>
+          <div class="chart-wrap"><canvas id="segmentFreq"></canvas></div>
+        </div>
+      </div>
+      <!-- Top Customers Table -->
+      <div class="table-card">
+        <div class="chart-header">
+          <h3>Top 10 Most Profitable Customers</h3>
+        </div>
+        <div class="table-wrapper">
+          <table class="data-table">
+            <thead>
+              <tr><th>Rank</th><th>Customer Name</th><th>Total Sales</th><th>Total Profit</th><th>Units Bought</th><th>Profit %</th></tr>
+            </thead>
+            <tbody id="topCustomerTableBody">
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ───────────────── GEOGRAPHY ───────────────── -->
+    <section id="geography" class="dashboard-section">
+      <div class="section-header">
+        <h2>🗺️ Geographic Performance</h2>
+        <p>Regional and state-level sales insights</p>
+      </div>
+      <div class="charts-row">
+        <div class="chart-card">
+          <div class="chart-header">
+            <h3>Sales by Region</h3>
+            <span class="chart-badge">Regional</span>
+          </div>
+          <div class="chart-wrap"><canvas id="regionPie"></canvas></div>
+        </div>
+        <div class="chart-card wide">
+          <div class="chart-header">
+            <h3>Profit by Region</h3>
+            <span class="chart-badge">Profitability</span>
+          </div>
+          <div class="chart-wrap"><canvas id="regionProfit"></canvas></div>
+        </div>
+      </div>
+      <div class="charts-row">
+        <div class="chart-card full-width">
+          <div class="chart-header">
+            <h3>Top 15 States by Revenue</h3>
+            <span class="chart-badge">State Ranking</span>
+          </div>
+          <div class="chart-wrap tall"><canvas id="stateChart"></canvas></div>
+        </div>
+      </div>
+      <!-- Region Cards -->
+      <div class="region-cards">
+        <div class="region-card west">
+          <h4>🌊 West</h4>
+          <div class="r-sales">$252,613</div>
+          <div class="r-profit pos">+$11,505 profit</div>
+          <div class="r-note">Best performing region</div>
+        </div>
+        <div class="region-card east">
+          <h4>🗽 East</h4>
+          <div class="r-sales">$208,291</div>
+          <div class="r-profit pos">+$3,046 profit</div>
+          <div class="r-note">Stable growth</div>
+        </div>
+        <div class="region-card central">
+          <h4>🏙️ Central</h4>
+          <div class="r-sales">$163,797</div>
+          <div class="r-profit neg">-$2,871 loss</div>
+          <div class="r-note">⚠ Needs attention</div>
+        </div>
+        <div class="region-card south">
+          <h4>🌴 South</h4>
+          <div class="r-sales">$117,299</div>
+          <div class="r-profit pos">+$6,771 profit</div>
+          <div class="r-note">Strong margin</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ───────────────── DISCOUNT ───────────────── -->
+    <section id="discount" class="dashboard-section">
+      <div class="section-header">
+        <h2>🏷️ Pricing & Discount Analysis</h2>
+        <p>Impact of discount levels on revenue and profitability</p>
+      </div>
+      <div class="charts-row">
+        <div class="chart-card wide">
+          <div class="chart-header">
+            <h3>Profit by Discount Level</h3>
+            <span class="chart-badge">Impact</span>
+          </div>
+          <div class="chart-wrap"><canvas id="discountProfit"></canvas></div>
+        </div>
+        <div class="chart-card">
+          <div class="chart-header">
+            <h3>Order Volume by Discount</h3>
+            <span class="chart-badge">Volume</span>
+          </div>
+          <div class="chart-wrap"><canvas id="discountVolume"></canvas></div>
+        </div>
+      </div>
+      <div class="charts-row">
+        <div class="chart-card full-width">
+          <div class="chart-header">
+            <h3>Revenue vs Profit at Each Discount Level</h3>
+            <span class="chart-badge">Comparison</span>
+          </div>
+          <div class="chart-wrap"><canvas id="discountCombo"></canvas></div>
+        </div>
+      </div>
+      <!-- Discount Insights -->
+      <div class="insights-row">
+        <div class="insight-card warn">
+          <div class="insight-icon">⚠️</div>
+          <h4>High Discount Risk</h4>
+          <p>Discounts ≥ 30% consistently produce losses. Orders at 30% discount generated -$10,695 in losses.</p>
+        </div>
+        <div class="insight-card good">
+          <div class="insight-icon">✅</div>
+          <h4>Optimal Discount</h4>
+          <p>0–15% discount range is most profitable. No-discount orders generated $58,133 in profit.</p>
+        </div>
+        <div class="insight-card warn">
+          <div class="insight-icon">📉</div>
+          <h4>70% Discount Extreme</h4>
+          <p>Orders with 70% discount (68 units) generated -$3,895 loss — worst ROI discount tier.</p>
+        </div>
+        <div class="insight-card info">
+          <div class="insight-icon">💡</div>
+          <h4>Recommendation</h4>
+          <p>Cap discounts at 20% to maintain positive margins. Re-evaluate Tables & Bookcases discount strategy.</p>
+        </div>
+      </div>
+      <!-- Discount Table -->
+      <div class="table-card">
+        <div class="chart-header"><h3>Discount Level Breakdown</h3></div>
+        <div class="table-wrapper">
+          <table class="data-table">
+            <thead>
+              <tr><th>Discount Level</th><th>Total Sales</th><th>Total Profit</th><th>Units</th><th>Profit/Unit</th><th>Status</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>0% (No Discount)</td><td>$256,025</td><td class="profit-pos">$58,133</td><td>3,224</td><td class="profit-pos">$18.03</td><td><span class="status-badge good">✅ Best</span></td></tr>
+              <tr><td>10%</td><td>$46,634</td><td class="profit-pos">$7,111</td><td>313</td><td class="profit-pos">$22.72</td><td><span class="status-badge good">✅ Good</span></td></tr>
+              <tr><td>15%</td><td>$27,559</td><td class="profit-pos">$1,419</td><td>198</td><td class="profit-pos">$7.17</td><td><span class="status-badge ok">🟡 Marginal</span></td></tr>
+              <tr><td>20%</td><td>$216,631</td><td class="profit-pos">$6,266</td><td>2,236</td><td class="profit-pos">$2.80</td><td><span class="status-badge ok">🟡 Low</span></td></tr>
+              <tr><td>30%</td><td>$99,470</td><td class="profit-neg">-$10,695</td><td>837</td><td class="profit-neg">-$12.78</td><td><span class="status-badge bad">❌ Loss</span></td></tr>
+              <tr><td>40%</td><td>$45,614</td><td class="profit-neg">-$16,187</td><td>292</td><td class="profit-neg">-$55.43</td><td><span class="status-badge bad">❌ Severe Loss</span></td></tr>
+              <tr><td>50%</td><td>$20,983</td><td class="profit-neg">-$12,871</td><td>209</td><td class="profit-neg">-$61.58</td><td><span class="status-badge bad">❌ Severe Loss</span></td></tr>
+              <tr><td>60%</td><td>$6,645</td><td class="profit-neg">-$5,945</td><td>501</td><td class="profit-neg">-$11.86</td><td><span class="status-badge bad">❌ Loss</span></td></tr>
+              <tr><td>70%</td><td>$2,459</td><td class="profit-neg">-$3,895</td><td>68</td><td class="profit-neg">-$57.28</td><td><span class="status-badge bad">❌ Worst ROI</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="dashboard-footer">
+      <p>FurniMetrics Dashboard · Data Source: Global Superstore US Furniture Dataset (2011–2014) · Team 4 Merauke</p>
+    </footer>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
